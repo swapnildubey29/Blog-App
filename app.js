@@ -7,15 +7,12 @@ const app = express()
 // configration
 app.use(express.static('public'))
 app.use(expressLayout)
-
-// Connect to DB
-connectDB()
-
 app.set('layout', './layouts/main')
 app.set('view engine', 'ejs')
 app.use('/', require('./server/routes/main'))
 
-
+// Connect to DB
+connectDB()
 
 
 
