@@ -8,8 +8,13 @@
     <script type="text/javascript" defer src="/js/script.js"></script>
 </head>
 <body>
+     <div class="container">
+       <%- include('../partials/header.ejs')  %>
+       <main class="main">
+        <%- body %>
+       </main>
+       <%- include('../partials/footer.ejs')  %>
 
-      <%- body %>
-      
+     </div>
 </body>
 </html>
