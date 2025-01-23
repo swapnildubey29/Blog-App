@@ -1,9 +1,10 @@
-const express = require("express")
-const router = express.Router()
-const Post = require("../models/Post")
-const User = require("../models/User")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const express = require("express");
+const router = express.Router();
+const Post = require("../models/Post");
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const adminLayout = "../views/layouts/admin";
 const jwtSecret = process.env.JWT_SECRET;
@@ -21,10 +22,9 @@ const authMiddleware = (req, res, next) => {
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" })
+    res.status(401).json({ message: "Unauthorized" });
   }
 };
-
 
 router.get("/admin", async (req, res) => {
   try {
@@ -80,7 +80,6 @@ router.get("/dashboard", authMiddleware, async (req, res) => {
     console.log(error);
   }
 });
-
 
 router.get("/add-post", authMiddleware, async (req, res) => {
   try {
@@ -171,9 +170,11 @@ router.put("/edit-post/:id", authMiddleware, async (req, res) => {
 
 router.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body; 
+    const { username, password } = req.body;
     if (!username || !password) {
-      return res.status(400).json({ message: "Username and password are required." });
+      return res
+        .status(400)
+        .json({ message: "Username and password are required." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -194,13 +195,12 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 router.delete("/delete-post/:id", authMiddleware, async (req, res) => {
   try {
-    await Post.deleteOne({ _id: req.params.id })
-    res.redirect("/dashboard")
+    await Post.deleteOne({ _id: req.params.id });
+    res.redirect("/dashboard");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 
