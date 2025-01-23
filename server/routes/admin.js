@@ -1,9 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const Post = require("../models/Post");
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const express = require("express")
+const router = express.Router()
+const Post = require("../models/Post")
+const User = require("../models/User")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const adminLayout = "../views/layouts/admin";
 const jwtSecret = process.env.JWT_SECRET;
@@ -21,7 +21,7 @@ const authMiddleware = (req, res, next) => {
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: "Unauthorized" })
   }
 };
 
@@ -169,13 +169,13 @@ router.put("/edit-post/:id", authMiddleware, async (req, res) => {
 //   }
 // });
 
-/**
- * POST /
- * Admin - Register
- */
 router.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password } = req.body; 
+    if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required." });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
@@ -184,24 +184,23 @@ router.post("/register", async (req, res) => {
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: "User already in use" });
+      } else {
+        res.status(500).json({ message: "Internal server error" });
       }
-      res.status(500).json({ message: "Internal server error" });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Server error occurred." });
   }
 });
 
-/**
- * DELETE /
- * Admin - Delete Post
- */
+
 router.delete("/delete-post/:id", authMiddleware, async (req, res) => {
   try {
-    await Post.deleteOne({ _id: req.params.id });
-    res.redirect("/dashboard");
+    await Post.deleteOne({ _id: req.params.id })
+    res.redirect("/dashboard")
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 });
 
