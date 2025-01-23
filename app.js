@@ -14,6 +14,8 @@ app.use('/', require('./server/routes/main'))
 // Connect to DB
 connectDB()
 
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 
 
 // Listen
