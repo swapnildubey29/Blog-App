@@ -11,7 +11,7 @@
 <form action="/edit-post/<%= data._id %>?_method=PUT" method="POST">
 
   <label for="title"><b>Title</b></label>
-  <input type="text" placeholder="Post Title" name="title" value="<%= data.title %>">
+  <input type="text" placeholder="Post Title" name="title" value="<%= data.title %>" required>
 
   <label for="body"><b>Content</b></label>
   <textarea name="body" cols="50" rows="10"><%= data.body %></textarea>
@@ -19,3 +19,18 @@
   <input type="submit" value="Update" class="btn">
 
 </form>
+
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: 'link image code table lists',
+    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright | numlist bullist | link image table | code',
+    height: 300,
+    setup: function (editor) {
+      editor.on('init', function () {
+        this.getContainer().style.transition = 'all 0.3s ease-in-out';
+      });
+    }
+  });
+</script>
